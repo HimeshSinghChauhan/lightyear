@@ -1,0 +1,385 @@
+<!-- 
+Dependencies:=
+Sounds taken from asoftmurmur.com website 
+-->
+
+<!-- 
+HomePage background Sound: https://lesfm.net/music/search/?q=Happy+Birthday+To+You+ 
+-->
+
+<!-- 
+LATEST:-
+The Entry page I think is excellent with a fade-in effect and the buttons appearing after the completion of the birthday song.
+
+The flow of events:
+1) The Entry Page, click to enter into space.
+2) The birthday song starts, after its completion further exploration buttons appear. ( rainy corner and gallery )
+
+SCOPE OF IMPROVEMENTS: 
+When entered the space once, then going back to the main page, I don't want the "click to enter space" and the buttons appearing only after sound again, it seems a bit odd. 
+Also I was thinking, after entering the space and the birthday music starts, instead of displaying her Birthday Wish at once, how about the message gets types slowly in sync with the music, it will be more interactive in think, and then the message gets compeleted, and after a few more secs of music the buttons appear for further exploration.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Happy Birthday!</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Quicksand&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Quicksand", sans-serif;
+        height: 100%;
+        overflow: hidden;
+        background: radial-gradient(
+          ellipse at center,
+          #1e002d 0%,
+          #0c0019 100%
+        );
+        color: #fff;
+      }
+
+      .background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("file:///C:/Users/Hp/backImage.jpeg") center center /
+          cover no-repeat;
+        opacity: 0.47;
+        z-index: 0;
+      }
+
+      canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        opacity:1;
+      }
+
+      .container {
+        z-index: 2;
+        
+        position: relative;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+        backdrop-filter: blur(8px);
+        visibility: hidden;
+      }
+
+      h1 {
+        font-family: "Great Vibes", cursive;
+        font-size: 4em;
+        color: #ffc3e0;
+        text-shadow: 0 0 20px #ff9ad6;
+        margin-bottom: 0.3em;
+        animation: fadeIn 2s ease-out;
+      }
+
+      p {
+        font-size: 1.3em;
+        max-width: 700px;
+        margin-bottom: 2.5em;
+        line-height: 1.7em;
+        color: #f0e6f6;
+        animation: fadeIn 2.5s ease-out;
+      }
+
+      .nav-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        animation: fadeIn 3s ease-out;
+      }
+
+      .nav-buttons a {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        border: 2px solid #ffbae7;
+        padding: 14px 32px;
+        border-radius: 30px;
+        text-decoration: none;
+        font-size: 1.2em;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+        box-shadow: 0 0 10px #ffbae760;
+      }
+
+      .nav-buttons a:hover {
+        background: #ffbae7;
+        color: #280330;
+        box-shadow: 0 0 18px #ff94d6;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="background"></div>
+
+    <canvas id="stars"></canvas>
+
+    <div class="container">
+      <h1
+        id="typed-message"
+        style="
+          font-family: 'Great Vibes', cursive;
+          font-size: 2.8em;
+          color: #ffc3e0;
+          text-align: center;
+          margin-top: 100px;
+          white-space: pre-wrap;
+          min-height: 120px;
+        "
+      >🎉 Happy Birthday Chica! 🎂
+      </h1>
+      <p class="fade-in">
+        In a sky full of stars, you're the brightest. <br />
+        ✨
+      </p>
+
+      <div class="nav-buttons fade-in">
+        <a href="rainy-corner.html">🌧️ Rainy Corner</a>
+       
+        
+
+
+       
+
+      </div>
+      
+
+    </div>
+
+    <!-- Particle stars -->
+
+    <script>
+      const canvas = document.getElementById("stars");
+      const ctx = canvas.getContext("2d");
+
+      let w = (canvas.width = window.innerWidth);
+      let h = (canvas.height = window.innerHeight);
+      let particles = [];
+
+      function initStars() {
+        for (let i = 0; i < 150; i++) {
+          particles.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            radius: Math.random() * 1.2,
+            dx: (Math.random() - 0.5) * 0.3,
+            dy: (Math.random() - 0.5) * 0.3,
+          });
+        }
+      }
+
+      function animateStars() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "#ffffff";
+        particles.forEach((p) => {
+          p.x += p.dx;
+          p.y += p.dy;
+
+          if (p.x < 0 || p.x > w) p.dx *= -1;
+          if (p.y < 0 || p.y > h) p.dy *= -1;
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+          ctx.fill();
+        });
+        requestAnimationFrame(animateStars);
+      }
+
+      window.addEventListener("resize", () => {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      });
+
+      initStars();
+      animateStars();
+    </script>
+
+    <audio id="bg-music" preload="auto">
+      <source
+        src="file://C:/Users/Hp/siteBackgroundBirthdayPiano.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <!-- Click-to-Enter Overlay -->
+    <div
+      id="click-overlay"
+      style="
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: radial-gradient(ellipse at center, #1e002d, #0c0019);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 2000;
+        font-family: 'Quicksand', sans-serif;
+        color: #ffc3e0;
+        text-align: center;
+        backdrop-filter: blur(10px);
+        animation: fadeIn 2s ease;
+      "
+    >
+      <h2
+        style="
+          font-family: 'Great Vibes', cursive;
+          font-size: 3em;
+          margin-bottom: 10px;
+          text-shadow: 0 0 20px #ffbae7;
+        "
+      >
+        🎂 Happy Birthday Chica!
+      </h2>
+      <p style="font-size: 1.2em">
+        A space just for you, wrapped in stardust 🎶
+      </p>
+
+      <button
+        id="enter-btn"
+        style="
+          margin-top: 30px;
+          padding: 14px 36px;
+          font-size: 1.2em;
+          border: none;
+          border-radius: 30px;
+          background: #ffbae7;
+          color: #29002d;
+          font-weight: bold;
+          box-shadow: 0 0 20px #ffbae7;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+        "
+      >
+        Enter
+      </button>
+    </div>
+
+    <!-- Fade-in Animation -->
+    <style>
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      .fade-in {
+        opacity: 0;
+        transition: opacity 1.5s ease;
+      }
+
+      .fade-in.visible {
+        opacity: 1;
+      }
+    </style>
+
+    <!-- Script for Music + Reveal -->
+    <script>
+      const overlay = document.getElementById("click-overlay");
+      const music = document.getElementById("bg-music");
+      const enterBtn = document.getElementById("enter-btn");
+      const navButtons = document.querySelector(".nav-buttons");
+
+     enterBtn.addEventListener("click", () => {
+  const hasVisited = localStorage.getItem("visitedBefore");
+
+  overlay.style.transition = "opacity 1.5s ease";
+  overlay.style.opacity = 0;
+
+  setTimeout(() => {
+    overlay.style.display = "none";
+    document.querySelector(".container").style.visibility = "visible";
+    document.querySelector("h1").classList.add("visible");
+    document.querySelector("p").classList.add("visible");
+  }, 1500);
+
+  if (!hasVisited) {
+    // First time visit
+    setTimeout(() => {
+      music.volume = 0.3;
+      music.play();
+    }, 700);
+
+    setTimeout(() => {
+      navButtons.classList.add("visible");
+    }, 59000); // After 59 seconds of song
+
+    localStorage.setItem("visitedBefore", "true");
+  } else {
+    // Already visited, show everything immediately
+    navButtons.classList.add("visible");
+  }
+});
+
+      // Add fade-in class initially
+      window.addEventListener("DOMContentLoaded", () => {
+        document.querySelector("h1").classList.add("fade-in");
+        document.querySelector("p").classList.add("fade-in");
+        navButtons.classList.add("fade-in");
+      });
+    </script>
+
+
+
+
+
+
+
+
+
+    <button
+  onclick="localStorage.removeItem('visitedBefore'); alert('Reset done! Reload the page to test again.')"
+  style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    font-size: 14px;
+    padding: 8px 12px;
+    background-color: #ffbae7;
+    color: #29002d;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #ffbae7;
+    cursor: pointer;
+    z-index: 9999;
+  "
+>
+  🔄 Reset Visit
+</button>
+  </body>
+</html>
